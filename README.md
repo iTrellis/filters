@@ -6,6 +6,8 @@ target-manager
 
 **Config**
 
+[target.conf.sample](target.conf.sample)
+
 ```
 {
   "target_demensions": [
@@ -32,7 +34,8 @@ target-manager
 
 **TEST**
 
-[fsm_test.go](fsm_test.go)
+[manager_test.go](manager_test.go)
+
 
 ```
 func TestTarget(t *testing.T) {
