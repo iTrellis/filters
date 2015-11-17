@@ -1,0 +1,21 @@
+{
+  "target_demensions": [
+    {
+      "target_name": "test1",
+      "demensions": []
+    },
+    {
+      "target_name": "test2",
+      "demensions": [
+        {
+          "target_key": "test2-key1",
+          "description": "for-test2-key1"
+        },
+        {
+          "target_key": "test2-key2",
+          "description": "for-test2-key2"
+        }
+      ]
+    }
+  ]
+}
