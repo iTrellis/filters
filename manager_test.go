@@ -17,7 +17,7 @@ var (
 
 func TestInitTargetDemensions(t *testing.T) {
 	manager := tm.NewManager()
-	manager.InitTargetDemensions(CONFIG_FILE)
+	manager.InitFiltersFile(CONFIG_FILE)
 	return
 }
 

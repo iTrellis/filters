@@ -12,7 +12,7 @@ type TargetDemensions struct {
 	TargetDemensions []Demensions `json:"target_demensions"`
 }
 
-func NewTargetDemensions() *TargetDemensions {
+func (*Manager) NewTargetDemensions() *TargetDemensions {
 	if targetDemensions == nil {
 		targetDemensions = new(TargetDemensions)
 	}
@@ -29,9 +29,9 @@ type Demension struct {
 	Description string `json:"description"`
 }
 
-func (*Manager) JsonFileReader(filename string) {
+func (p *Manager) InitFiltersFile(filename string) {
 
-	tds := new(TargetDemensions)
+	tds := p.NewTargetDemensions()
 
 	if err := cr.NewConfigReader().JsonFileReader(filename, tds); err != nil {
 		panic(err)
@@ -48,4 +48,11 @@ func (*Manager) JsonFileReader(filename string) {
 		}
 		mapDemensions[v.TargetName] = nameDemensions
 	}
+
+	return
+}
+
+func (*Manager) InitFiltersDB(filename string) {
+	// TODO
+	return
 }
