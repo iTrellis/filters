@@ -12,12 +12,12 @@ const (
 )
 
 var (
-	manager *tm.Manager
+	manager = tm.NewManager()
 )
 
 func TestInitTargetDemensions(t *testing.T) {
-	manager := tm.NewManager()
-	manager.InitFiltersFile(CONFIG_FILE)
+	manager.InitFilters(CONFIG_FILE, tm.InitFiltersTypeFromDB)
+	manager.InitFilters(CONFIG_FILE, tm.InitFiltersTypeFromFile)
 	return
 }
 

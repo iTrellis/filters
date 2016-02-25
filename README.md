@@ -4,11 +4,11 @@ target-manager
 
 ## Sample
 
-**Config**
+### Test Config
 
 [target.conf.sample](target.conf.sample)
 
-```
+```json
 {
   "target_demensions": [
     {
@@ -32,12 +32,25 @@ target-manager
 }
 ```
 
-**TEST**
+### Init Config
+
+```go
+var (
+    manager = tm.NewManager()
+)
+
+func TestInitTargetDemensions(t *testing.T) {
+    manager.InitFilters(CONFIG_FILE, tm.InitFiltersTypeFromFile)
+    return
+}
+```
+
+
+### TEST
 
 [manager_test.go](manager_test.go)
 
-
-```
+```go
 func TestTarget(t *testing.T) {
 
     Convey("get target name's demensions", t, func() {

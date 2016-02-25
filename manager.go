@@ -11,7 +11,7 @@ type Manager struct {
 type TargetValues map[string]interface{}
 type CompareValues map[string]interface{}
 
-func NewManager() TragetReaderRepo {
+func NewManager() TragetManagerRepo {
 	if manager == nil {
 		manager = new(Manager)
 		mapDemensions = make(map[string]map[string]*Demension)
