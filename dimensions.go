@@ -1,7 +1,7 @@
 package target_manager
 
 import (
-	cr "github.com/go-rut/utils/config_reader"
+	cr "github.com/go-rut/config_reader"
 )
 
 var (
