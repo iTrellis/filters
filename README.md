@@ -1,6 +1,9 @@
 # target-manager
 
-target-manager
+
+## Build
+
+* [![Build Status](https://travis-ci.org/go-rut/target_manager.png)](https://travis-ci.org/go-rut/target_manager)
 
 ## Sample
 
