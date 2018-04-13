@@ -3,7 +3,7 @@
 
 ## Build
 
-* [![Build Status](https://travis-ci.org/go-rut/target_manager.png)](https://travis-ci.org/go-rut/target_manager)
+* [![Build Status](https://travis-ci.org/ymhhh/target_manager.png)](https://travis-ci.org/ymhhh/target_manager)
 
 ## Sample
 
