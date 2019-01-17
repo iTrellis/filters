@@ -2,7 +2,7 @@ language: go
 
 install:
   - go get github.com/smartystreets/goconvey/convey
-  - go get -u github.com/go-rut/target_manager
+  - go get -u github.com/go-trellis/filters
 
 script:
   - go test -v ./...

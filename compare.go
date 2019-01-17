@@ -2,27 +2,25 @@
 
 // Copyright (c) 2015 rutcode-go
 
-package target_manager
+package filters
 
 // TODO
 // demension compare method: equal; range; gt; lt; egt ; elt
 const (
-	_COMPARE_TYPE_EQUAL = iota
-	_COMPARE_TYPE_RANGE
-	_COMPARE_TYPE_GT
-	_COMPARE_TYPE_EGT
-	_COMPARE_TYPE_LT
-	_COMPARE_TYPE_ELT
+	_CompareTypeEQUAL = iota
+	_CompareTypeRANGE
+	_CompareTypeGT
+	_CompareTypeEGT
+	_CompareTypeLT
+	_CompareTypeELT
 )
 
-func (p *Manager) Compare(
-	targetName string,
-	targetValues TargetValues,
-	compareValues CompareValues) (
+// Compare 校验
+func (p *Manager) Compare(targetName string, targetValues TargetValues, compareValues CompareValues) (
 	filtered bool, err error) {
-	targetDemensions := p.GetTargetMapDemensions(targetName)
+	targetDemensions := p.MapDemensions[targetName]
 	if targetDemensions == nil {
-		return true, ERR_TARGET_NAME_NOT_EXIST
+		return true, ErrTargetNameNotExists
 	} else if len(targetDemensions) == 0 {
 		return
 	}
@@ -34,7 +32,7 @@ func (p *Manager) Compare(
 	for k, v := range compareValues {
 		demension := targetDemensions[k]
 		if demension == nil {
-			return true, ERR_INVALID_DEMEMSION
+			return true, ErrInvalidDemension
 		}
 
 		if targetValues[k] == v {
