@@ -1,6 +1,12 @@
 # target-manager
 
 
+## Installation
+
+```go
+go get github.com/go-trellis/filters
+```
+
 ## Build
 
 * [![Build Status](https://travis-ci.org/go-trellis/filters.png)](https://travis-ci.org/go-trellis/filters)
