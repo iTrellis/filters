@@ -2,47 +2,56 @@
 
 // Copyright (c) 2015 rutcode-go
 
-package target_manager
+package filters
 
 import (
-	cr "github.com/go-rut/config_reader"
+	"github.com/go-trellis/config"
 )
 
+// InitFiltersTypeFromFile 初始化的方法名称
 const (
-	InitFiltersTypeFromFile = iota
-	InitFiltersTypeFromDB
+	InitFiltersTypeFromFile = "file"
 )
 
-type TragetManagerRepo interface {
-	InitFilters(filename string, typ int) error
+// InitManagerFunc 初始化方法
+type InitManagerFunc func(options map[string]interface{}) (*Manager, error)
 
+// MapInitialTypes 初始化的方法函数集合
+var MapInitialTypes = map[string]InitManagerFunc{
+	InitFiltersTypeFromFile: InitManagerFromFile,
+}
+
+// FilterRepo 过滤Repo
+type FilterRepo interface {
 	Compare(string, TargetValues, CompareValues) (bool, error)
 }
 
-func (p *Manager) InitFilters(filename string, typ int) (err error) {
-	if typ == InitFiltersTypeFromFile {
-		err = p.initFiltersFile(filename)
-	} else if typ == InitFiltersTypeFromDB {
-		err = p.initFiltersDB(filename)
+// InitManagerFromFile 通过文件初始化Manager
+func InitManagerFromFile(options map[string]interface{}) (manager *Manager, err error) {
+
+	if options == nil {
+		return nil, ErrNeedConfigFile
 	}
 
-	if err != nil {
-		panic(err)
+	filenameI := options["filename"]
+	filename, ok := filenameI.(string)
+	if !ok {
+		return nil, ErrNeedConfigFile
 	}
 
-	return
-}
+	if manager == nil {
+		manager = &Manager{
+			MapDemensions: make(map[string]map[string]*Demension),
+		}
+	}
 
-func (p *Manager) initFiltersFile(filename string) (err error) {
-
-	tds := p.NewTargetDemensions()
-
-	if err = cr.NewConfigReader().JsonFileReader(filename, tds); err != nil {
+	tds := &TargetDemensions{}
+	if err = config.NewSuffixReader().Read(filename, tds); err != nil {
 		return
 	}
 
 	for _, v := range tds.TargetDemensions {
-		nameDemensions := mapDemensions[v.TargetName]
+		nameDemensions := manager.MapDemensions[v.TargetName]
 		if nameDemensions == nil {
 			nameDemensions = make(map[string]*Demension, 0)
 		}
@@ -50,13 +59,7 @@ func (p *Manager) initFiltersFile(filename string) (err error) {
 		for _, d := range v.Demensions {
 			nameDemensions[d.TargetKey] = &d
 		}
-		mapDemensions[v.TargetName] = nameDemensions
+		manager.MapDemensions[v.TargetName] = nameDemensions
 	}
-
-	return
-}
-
-// TODO
-func (*Manager) initFiltersDB(filename string) (err error) {
 	return
 }

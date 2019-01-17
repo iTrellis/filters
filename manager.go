@@ -2,27 +2,30 @@
 
 // Copyright (c) 2015 rutcode-go
 
-package target_manager
+package filters
 
-var (
-	manager       *Manager
-	mapDemensions map[string]map[string]*Demension
-)
-
+// Manager 管理者对象
 type Manager struct {
+	MapDemensions map[string]map[string]*Demension
 }
 
+// TargetValues 目标参数
 type TargetValues map[string]interface{}
+
+// CompareValues 匹配参数
 type CompareValues map[string]interface{}
 
-func NewManager() TragetManagerRepo {
-	if manager == nil {
-		manager = new(Manager)
-		mapDemensions = make(map[string]map[string]*Demension)
-	}
-	return manager
-}
+// NewManager 生成管理者对象
+func NewManager(initType string, options map[string]interface{}) (FilterRepo, error) {
 
-func (p *Manager) GetTargetMapDemensions(name string) map[string]*Demension {
-	return mapDemensions[name]
+	initFunc, ok := MapInitialTypes[initType]
+	if !ok {
+		return nil, ErrNotFoundInitialFunction
+	}
+
+	manager, err := initFunc(options)
+	if err != nil {
+		return nil, err
+	}
+	return manager, nil
 }
