@@ -1,45 +1,58 @@
 // MIT License
 
-// Copyright (c) 2015 rutcode-go
+// Copyright (c) 2016 rutcode-go
 
 package filters
 
-// TODO
-// demension compare method: equal; range; gt; lt; egt ; elt
+// FilterValues type map[string]interface{}
+type FilterValues map[string]interface{}
+
+// CompareFunc is the function you want to compare input values with target values
+// Input Values is the k:v maps with input values
+// Target Values is the k:v maps with filter values
+// return bool is filtered
+// return error if compare function has internal error
+// you can write you campare functions like FilterFunc, then manager.AddFilterFunc(name, filterFunc)
+type CompareFunc func(input, target FilterValues) (filtered bool, err error)
+
+// CompareType compare type
+type CompareType int
+
+// CompareType defines
 const (
-	_CompareTypeEQUAL = iota
-	_CompareTypeRANGE
-	_CompareTypeGT
-	_CompareTypeEGT
-	_CompareTypeLT
-	_CompareTypeELT
+	CompareTypeSequence CompareType = iota
+	CompareTypeConsistent
 )
 
-// Compare 校验
-func (p *Manager) Compare(targetName string, targetValues TargetValues, compareValues CompareValues) (
-	filtered bool, err error) {
-	targetDemensions := p.MapDemensions[targetName]
-	if targetDemensions == nil {
-		return true, ErrTargetNameNotExists
-	} else if len(targetDemensions) == 0 {
+// FilterParams filter params
+type FilterParams struct {
+	Names []string
+	Type  CompareType
+}
+
+func (p *FilterParams) valid() (err error) {
+	if p == nil {
+		return ErrNotInputParams.New()
+	}
+
+	if err = p.validType(); err != nil {
 		return
 	}
 
-	if compareValues == nil {
-		return
+	return p.validNames()
+}
+
+func (p *FilterParams) validType() error {
+	if p.Type != CompareTypeSequence &&
+		p.Type != CompareTypeConsistent {
+		return ErrNotSupportedFilterType.New()
 	}
+	return nil
+}
 
-	for k, v := range compareValues {
-		demension := targetDemensions[k]
-		if demension == nil {
-			return true, ErrInvalidDemension
-		}
-
-		if targetValues[k] == v {
-			continue
-		}
-
-		return true, nil
+func (p *FilterParams) validNames() error {
+	if len(p.Names) == 0 {
+		return ErrInvalidFilterName.New()
 	}
-	return
+	return nil
 }
