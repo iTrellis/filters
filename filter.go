@@ -22,7 +22,7 @@ type filter struct {
 // New generate an new target filter
 func New() FilterRepo {
 	return &filter{
-		compareFuncs:   make(map[string]CompareFunc),
+		compareFuncs:   map[string]CompareFunc{EqualFunctionName: CompareEqualsFunc},
 		compareTimeout: 30 * time.Second,
 	}
 }

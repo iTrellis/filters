@@ -1,6 +1,6 @@
 // MIT License
 
-// Copyright (c) 2016 rutcode-go
+// Copyright (c) 2016 go-trellis
 
 package filters
 
@@ -32,7 +32,7 @@ type FilterParams struct {
 
 func (p *FilterParams) valid() (err error) {
 	if p == nil {
-		return ErrNotInputParams.New()
+		return ErrNotExistsInputParams.New()
 	}
 
 	if err = p.validType(); err != nil {
@@ -43,11 +43,11 @@ func (p *FilterParams) valid() (err error) {
 }
 
 func (p *FilterParams) validType() error {
-	if p.Type != CompareTypeSequence &&
-		p.Type != CompareTypeConsistent {
-		return ErrNotSupportedFilterType.New()
+	switch p.Type {
+	case CompareTypeSequence, CompareTypeConsistent:
+		return nil
 	}
-	return nil
+	return ErrNotSupportedFilterType.New()
 }
 
 func (p *FilterParams) validNames() error {
