@@ -60,7 +60,7 @@ func (p *filter) GetCompareFunc(name string) CompareFunc {
 	return p.compareFuncs[name]
 }
 
-// SetFilterTimeout set filter function timeout
+// SetCompareTimeout set filter function timeout
 func (p *filter) SetCompareTimeout(timeout time.Duration) error {
 	p.Lock()
 	defer p.Unlock()
