@@ -95,7 +95,6 @@ func (p *filter) Compare(params *FilterParams, intput, target FilterValues) (fil
 				}
 			}
 			fChan <- filterMessage{}
-			return
 		}()
 	case CompareTypeConsistent:
 		// consistent to compare filter functions
