@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-trellis/errors"
+	"github.com/go-trellis/common/errors"
 )
 
 type filter struct {
