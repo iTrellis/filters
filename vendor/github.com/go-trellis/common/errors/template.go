@@ -1,5 +1,19 @@
-// GNU GPL v3 License
-// Copyright (c) 2017 github.com:go-trellis
+/*
+Copyright © 2020 Henry Huang <hhh@rutcode.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 package errors
 
@@ -55,41 +69,35 @@ func (p *ErrorCodeTmpl) New(v ...Params) ErrorCode {
 		}
 	}
 
-	stack := callersDeepth(5)
-	frames, _ := stack.PopAll()
-
 	eCode := &errorCode{
-		err: Error{
-			ID: hash.NewCRCIEEE().Sum(fmt.Sprintf("%s.%d.%s.%d",
-				p.namespace, p.code, p.message, time.Now().UnixNano())),
-			Namespace: p.namespace,
-			Code:      p.code,
-		},
-		stackTrace: frameToString(frames),
-		// stackTrace: stack.String(),
-		context: make(map[string]interface{}),
+		code:       p.code,
+		stackTrace: callersDeepth(5),
+		context:    make(map[string]interface{}),
 	}
+
+	errID := hash.NewCRCIEEE().Sum(fmt.Sprintf("%s.%d.%s.%d",
+		p.namespace, p.code, p.message, time.Now().UnixNano()))
 
 	t, e := template.New(genErrorCodeKey(p.namespace, p.code)).Parse(p.message)
 	if e != nil {
-		eCode.err.Namespace = "E"
-		eCode.err.Code = errorcodeParseTemplate
-		eCode.err.Message = fmt.Sprintf(
+		eCode.code = errorcodeParseTemplate
+
+		eCode.err = new(p.namespace, errID, fmt.Sprintf(
 			"parser template error, namespace: %s, code: %d, error: %s",
-			p.namespace, p.code, e.Error())
+			p.namespace, p.code, e.Error()))
 		return eCode
 	}
 
 	var buf bytes.Buffer
 	if e := t.Execute(&buf, params); e != nil {
-		eCode.err.Namespace = "E"
-		eCode.err.Code = errorcodeExecuteTemplate
-		eCode.err.Message = fmt.Sprintf(
+		eCode.code = errorcodeExecuteTemplate
+
+		eCode.err = new(p.namespace, errID, fmt.Sprintf(
 			"execute template error, namespace: %s code: %d, error: %s",
-			p.message, p.code, e.Error())
+			p.message, p.code, e.Error()))
 		return eCode
 	}
-	eCode.err.Message = buf.String()
+	eCode.err = new(p.namespace, errID, buf.String())
 
 	return eCode
 }
