@@ -32,7 +32,6 @@ type ErrorCode interface {
 	Code() uint64
 	StackTrace() string
 	Context() ErrorContext
-	FullError() error
 	Append(err ...error) ErrorCode
 	WithContext(k string, v interface{}) ErrorCode
 }
@@ -157,14 +156,14 @@ func (p *errorCode) Error() string {
 	return msg
 }
 
-func (p *errorCode) FullError() error {
-	return fmt.Errorf(strings.Join(
+func (p *errorCode) FullError() string {
+	return strings.Join(
 		append([]string{},
 			fmt.Sprintf("ID:%s#%s", genErrorCodeKey(p.Namespace(), p.Code()), p.ID()),
 			"Error:", p.Error(),
 			"Context:", p.Context().Error(),
 			"StackTrace:", p.StackTrace(),
-		), "\n"))
+		), "\n")
 }
 
 func (p *errorCode) ID() string {

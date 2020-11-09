@@ -28,8 +28,7 @@ type Errors []error
 // NewErrors 生成错误数据对象
 func NewErrors(errs ...error) Errors {
 	var e Errors
-	e.Append(errs...)
-	return e
+	return e.Append(errs...)
 }
 
 func (p Errors) Error() string {
@@ -37,12 +36,12 @@ func (p Errors) Error() string {
 }
 
 // Append 增补错误对象
-func (p Errors) Append(errs ...error) {
-	for _, err := range errs {
-		if err != nil {
-			p = append(p, err)
-		}
+func (p Errors) Append(errs ...error) Errors {
+	if len(errs) == 0 {
+		return p
 	}
+	p = append(p, errs...)
+	return p
 }
 
 func errorsString(errs ...error) []string {
@@ -50,9 +49,9 @@ func errorsString(errs ...error) []string {
 	for _, e := range errs {
 		switch ev := e.(type) {
 		case ErrorCode:
-			ss = append(ss, fmt.Sprintf("(%s#%d:%s) %s", ev.Namespace(), ev.Code(), ev.ID(), ev.Error()))
+			ss = append(ss, fmt.Sprintf("(%s#%d:%s):%s", ev.Namespace(), ev.Code(), ev.ID(), ev.Error()))
 		case SimpleError:
-			ss = append(ss, fmt.Sprintf("(%s:%s) %s", ev.Namespace(), ev.ID(), ev.Error()))
+			ss = append(ss, fmt.Sprintf("(%s:%s):%s", ev.Namespace(), ev.ID(), ev.Error()))
 		default:
 			ss = append(ss, ev.Error())
 		}

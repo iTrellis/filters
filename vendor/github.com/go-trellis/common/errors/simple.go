@@ -28,6 +28,7 @@ type SimpleError interface {
 	ID() string
 	Namespace() string
 	Message() string
+	FullError() string
 	Error() string
 }
 
@@ -53,6 +54,11 @@ func new(namespace, id, message string) *Error {
 }
 
 func (p *Error) Error() string {
+	return p.message
+}
+
+// FullError 全部错误信息
+func (p *Error) FullError() string {
 	return fmt.Sprintf("%s#%s:%s", p.namespace, p.id, p.message)
 }
 
