@@ -1,5 +1,5 @@
-module github.com/go-trellis/filters
+module github.com/iTrellis/filters
 
 go 1.13
 
-require github.com/go-trellis/common v0.0.0-20201109093531-dd6cf5c3eb27
+require github.com/iTrellis/common v0.20.0

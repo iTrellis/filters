@@ -23,7 +23,7 @@ import (
 	"html/template"
 	"time"
 
-	"github.com/go-trellis/common/encryption/hash"
+	"github.com/iTrellis/common/encryption/hash"
 )
 
 const (

@@ -22,7 +22,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/go-trellis/common/data-structures/stack"
+	"github.com/iTrellis/common/data-structures/stack"
 )
 
 func callersDeepth(deepth int) stack.Stack {

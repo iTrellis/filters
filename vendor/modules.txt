@@ -1,6 +1,6 @@
-# github.com/go-trellis/common v0.0.0-20201109093531-dd6cf5c3eb27
-github.com/go-trellis/common/data-structures/stack
-github.com/go-trellis/common/encryption/hash
-github.com/go-trellis/common/errors
-# github.com/google/uuid v1.1.2
+# github.com/google/uuid v1.1.5
 github.com/google/uuid
+# github.com/iTrellis/common v0.20.0
+github.com/iTrellis/common/data-structures/stack
+github.com/iTrellis/common/encryption/hash
+github.com/iTrellis/common/errors
