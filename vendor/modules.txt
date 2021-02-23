@@ -1,6 +1,6 @@
 # github.com/google/uuid v1.2.0
 github.com/google/uuid
-# github.com/iTrellis/common v0.21.1
+# github.com/iTrellis/common v0.21.3
 github.com/iTrellis/common/data-structures/stack
 github.com/iTrellis/common/encryption/hash
 github.com/iTrellis/common/errors
